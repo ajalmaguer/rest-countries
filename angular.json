@@ -23,9 +23,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles/bootstrap.min.css",
+              "src/styles/sb-admin-2.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/scripts/jquery.min.js",
+              "src/scripts/bootstrap.bundle.min.js",
+              "src/scripts/jquery.easing.min.js",
+              "src/scripts/sb-admin-2.min.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
