@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostBinding, Input } from '@angular/core';
+import { NavbarObject, NavItem, NavHeader } from './nav-items.interface';
 
 declare const $;
 
@@ -9,11 +10,16 @@ declare const $;
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, AfterViewInit {
+  @HostBinding('class') hostClass =
+    'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion';
+  @HostBinding('id') hostId = 'accordionSidebar';
+
+  @Input()
+  navItems: NavbarObject[];
+
   constructor() {}
 
-  ngOnInit() {
-    console.log('hello');
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     // Toggle the side navigation
@@ -24,5 +30,13 @@ export class NavbarComponent implements OnInit, AfterViewInit {
         $('.sidebar .collapse').collapse('hide');
       }
     });
+  }
+
+  getNavItem(item: NavbarObject): NavItem {
+    return item as NavItem;
+  }
+
+  getNavHeader(item: NavbarObject): NavHeader {
+    return item as NavHeader;
   }
 }

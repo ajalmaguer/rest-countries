@@ -7,9 +7,10 @@ import { PageHeadingComponent } from './page-heading/page-heading.component';
 import { CardComponent } from './card/card.component';
 import { CardHeaderDirective } from './card/card-header.directive';
 import { CardBodyDirective } from './card/card-body.directive';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   declarations: [
     NavbarComponent,
     TopBarComponent,
