@@ -1,0 +1,10 @@
+<div class="card shadow mb-4" [ngClass]="appClass">
+  <div class="card-header py-3" *ngIf="header">
+    <h6 class="m-0 font-weight-bold text-primary">
+      <ng-content select="[appCardHeader]"></ng-content>
+    </h6>
+  </div>
+  <div class="card-body">
+    <ng-content select="[appCardBody]"></ng-content>
+  </div>
+</div>
