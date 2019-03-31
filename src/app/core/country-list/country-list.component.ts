@@ -25,6 +25,7 @@ export class CountryListComponent implements OnInit {
           .filter(this.searchBarFilter(state.filter))
           .sort(this.alphabeticalOrder())
           .sort(this.sortByBorderNumber(state.borderSort))
+          .sort(this.sortByPopulation(state.populationSort))
           .slice(0, state.displayNumber);
       })
     );
@@ -57,17 +58,22 @@ export class CountryListComponent implements OnInit {
     this.countryService.toggleBorderSort();
   }
 
-  getBorderSortText(sortId: number): string {
+  togglePopulationSort() {
+    this.countryService.togglePopulationSort();
+  }
+
+  getSortText(sortId: number): string {
     switch (sortId) {
       case 1:
         return 'Ascending';
       case 2:
         return 'Decending';
       default:
-        return 'None';
+        return '';
     }
   }
 
+  // filter and sort functions
   onlyIslandsFilter(islandsOnly: boolean) {
     return country => {
       if (!islandsOnly) {
@@ -106,12 +112,25 @@ export class CountryListComponent implements OnInit {
   }
 
   sortByBorderNumber(borderSort) {
-    return (countryA, countryB) => {
+    return (countryA: Country, countryB: Country) => {
       switch (borderSort) {
         case 1:
           return countryA.borders.length - countryB.borders.length;
         case 2:
           return countryB.borders.length - countryA.borders.length;
+        default:
+          return 0;
+      }
+    };
+  }
+
+  sortByPopulation(populationSort) {
+    return (countryA: Country, countryB: Country) => {
+      switch (populationSort) {
+        case 1:
+          return countryA.population - countryB.population;
+        case 2:
+          return countryB.population - countryA.population;
         default:
           return 0;
       }
