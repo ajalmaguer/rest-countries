@@ -24,7 +24,6 @@ export class WrapperComponent implements OnInit {
   }
 
   onFilter(filterString) {
-    console.log('filter =', filterString);
     this.countryService.filterCountries(filterString);
   }
 

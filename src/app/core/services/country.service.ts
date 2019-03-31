@@ -1,19 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { shareReplay, tap, filter } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { Country, CountryListHash } from '../interfaces/country.interface';
+
+interface AppState {
+  filter: string;
+  displayNumber: number;
+  countries: Country[];
+  countryListHash: CountryListHash;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountryService {
+  // tslint:disable-next-line:variable-name
+  private _state$ = new BehaviorSubject<AppState>({
+    filter: '',
+    displayNumber: 15,
+    countries: [],
+    countryListHash: {}
+  });
+  public readonly state$ = this._state$.asObservable();
+
   private baseUrl = 'https://restcountries.eu/rest/v2';
-  countries$ = new BehaviorSubject<Country[]>([]);
-  private countryList: Country[];
-  private countryListHash: CountryListHash;
-  private displayNumber = 15;
 
   constructor(private http: HttpClient) {}
 
@@ -22,12 +34,13 @@ export class CountryService {
       .get<Country[]>(`${this.baseUrl}/all`)
       .pipe(
         tap(countries => {
-          this.countryList = countries;
-          this.countryListHash = this.buildHashMap(countries);
-        }),
-        tap(countries =>
-          this.countries$.next(countries.slice(0, this.displayNumber))
-        )
+          const state = {
+            ...this._state$.getValue(),
+            countries,
+            countryListHash: this.buildHashMap(countries)
+          };
+          this._state$.next(state);
+        })
       )
       .subscribe();
   }
@@ -42,23 +55,24 @@ export class CountryService {
   }
 
   showMoreCountries() {
-    this.displayNumber = this.displayNumber + 15;
-    this.countries$.next(this.countryList.slice(0, this.displayNumber));
+    const state = this._state$.getValue();
+    this._state$.next({
+      ...state,
+      displayNumber: state.displayNumber + 15
+    });
   }
 
   filterCountries(filterString) {
-    const sanitizedFilterString = filterString.toLowerCase();
-    const filteredCountries = this.countryList
-      .filter(country => {
-        return country.name.toLowerCase().indexOf(sanitizedFilterString) > -1;
-      })
-      .slice(0, this.displayNumber);
-
-    this.countries$.next(filteredCountries);
+    const state = this._state$.getValue();
+    this._state$.next({
+      ...state,
+      filter: filterString,
+      displayNumber: 15
+    });
   }
 
   // Helper functions
   getCountryName(alpha3Code: string): string {
-    return this.countryListHash[alpha3Code].name;
+    return this._state$.getValue().countryListHash[alpha3Code].name;
   }
 }

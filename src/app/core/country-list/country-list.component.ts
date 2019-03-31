@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CountryService } from '../services/country.service';
 import { Country } from '../interfaces/country.interface';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-country-list',
@@ -12,11 +13,21 @@ export class CountryListComponent implements OnInit {
   pageHeading = 'All Countries';
   countries$: Observable<Country[]>;
 
-  constructor(private countryService: CountryService) { }
+  constructor(private countryService: CountryService) {}
 
   ngOnInit() {
     this.countryService.getAllCountries();
-    this.countries$ = this.countryService.countries$;
+    this.countries$ = this.countryService.state$.pipe(
+      map(state => {
+        return state.countries
+          .filter(country => {
+            const countryName = country.name.toLowerCase();
+            const filter = state.filter.toLowerCase();
+            return countryName.indexOf(filter) > -1;
+          })
+          .slice(0, state.displayNumber);
+      })
+    );
   }
 
   trackByFn(index, country: Country) {
@@ -30,5 +41,4 @@ export class CountryListComponent implements OnInit {
   showMore() {
     this.countryService.showMoreCountries();
   }
-
 }
