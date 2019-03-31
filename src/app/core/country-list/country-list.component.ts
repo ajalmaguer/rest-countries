@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CountryService } from '../services/country.service';
+import { Country } from '../interfaces/country.interface';
 
 @Component({
   selector: 'app-country-list',
@@ -7,10 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CountryListComponent implements OnInit {
   pageHeading = 'All Countries';
+  countries$: Observable<Country[]>;
 
-  constructor() { }
+  constructor(private countryService: CountryService) { }
 
   ngOnInit() {
+    this.countryService.getAllCountries();
+    this.countries$ = this.countryService.countries$;
+  }
+
+  trackByFn(index, country: Country) {
+    return country.alpha3Code;
+  }
+
+  getCountryName(alpha3Code: string): string {
+    return this.countryService.getCountryName(alpha3Code);
+  }
+
+  showMore() {
+    this.countryService.showMoreCountries();
   }
 
 }

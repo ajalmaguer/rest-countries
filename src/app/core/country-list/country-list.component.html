@@ -1,17 +1,82 @@
 <app-page-heading [heading]="pageHeading"></app-page-heading>
 
-<div class="row">
-  <div class="col-md-6">
-    <app-card >
-      <div appCardHeader>some header</div>
-      <div appCardBody>some body</div>
-    </app-card>
-  </div>
-
-  <div class="col-md-6">
-    <app-card appClass="border-left-success">
-      <!-- <div appCardHeader>some header</div> -->
-      <div appCardBody>some body</div>
+<div class="row mb-4">
+  <div class="col-xl-3 col-md-6">
+    <app-card appClass="border-left-primary">
+      <div appCardBody>
+        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+          Number of Countries:
+        </div>
+        <div class="h5 mb-0 font-weight-bold text-gray-800">
+          {{ (countries$ | async)?.length }}
+        </div>
+      </div>
+      <div class="col-auto">
+        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+      </div>
     </app-card>
   </div>
 </div>
+
+<div class="row">
+  <div
+    class="col-md-4"
+    *ngFor="let country of (countries$ | async); trackBy: trackByFn"
+  >
+    <app-card>
+      <div appCardHeader>{{ country.name }} ({{ country.alpha3Code }})</div>
+      <div appCardBody>
+        <div class="text-center">
+          <img
+            class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+            style="width: 25rem; height: 100px;"
+            [src]="country.flag"
+            alt=""
+          />
+        </div>
+        <div>
+          <strong>Population: </strong>
+          <span>{{ country.population | number }}</span>
+        </div>
+        <div>
+          <strong>Languages ({{ country.languages.length }})</strong>
+          <ul>
+            <li *ngFor="let language of country.languages">
+              {{ language.name }}
+            </li>
+          </ul>
+        </div>
+        <div>
+          <strong>Borders ({{ country.borders.length }})</strong>
+          <div
+            *ngIf="country.borders.length === 0; else borderList"
+            class="text-center"
+          >
+            <i class="fas fa-water text-info"></i>
+            <i class="fas fa-water text-info"></i>
+            <span class="text-primary"> Island </span>
+            <i class="fas fa-water text-info"></i>
+            <i class="fas fa-water text-info"></i>
+          </div>
+          <ng-template #borderList>
+            <ul>
+              <li *ngFor="let border of country.borders">
+                {{ getCountryName(border) }}
+              </li>
+            </ul>
+          </ng-template>
+        </div>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-sm-12">
+    <div class="text-center">
+      <button class="btn btn-primary btn-lg" (click)="showMore()">
+        show more
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- <pre>{{ countries$ | async | json }}</pre> -->
