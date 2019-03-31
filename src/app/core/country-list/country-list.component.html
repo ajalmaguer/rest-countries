@@ -5,10 +5,10 @@
     <app-card appClass="border-left-primary">
       <div appCardBody>
         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-          Number of Countries:
+          Displaying:
         </div>
         <div class="h5 mb-0 font-weight-bold text-gray-800">
-          {{ (countries$ | async)?.length }}
+          {{ (countries$ | async)?.length }} of {{ totalCountries$ | async }} total countries.
         </div>
       </div>
       <div class="col-auto">

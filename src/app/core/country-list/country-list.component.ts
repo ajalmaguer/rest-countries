@@ -11,12 +11,16 @@ import { map } from 'rxjs/operators';
 })
 export class CountryListComponent implements OnInit {
   pageHeading = 'All Countries';
+  totalCountries$: Observable<number>;
   countries$: Observable<Country[]>;
 
   constructor(private countryService: CountryService) {}
 
   ngOnInit() {
     this.countryService.getAllCountries();
+    this.totalCountries$ = this.countryService.state$.pipe(
+      map(state => state.countries.length)
+    );
     this.countries$ = this.countryService.state$.pipe(
       map(state => {
         return state.countries
