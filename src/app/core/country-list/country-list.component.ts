@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { CountryService, AppState } from '../services/country.service';
 import { Country } from '../interfaces/country.interface';
 import { map } from 'rxjs/operators';
@@ -13,11 +13,7 @@ export class CountryListComponent implements OnInit {
   pageHeading = 'All Countries';
   state$: Observable<AppState>;
 
-  get totalCountries$() {
-    return this.state$.pipe(map(state => state.countries.length));
-  }
-
-  get countries$() {
+  get filteredCountries$() {
     return this.state$.pipe(
       map(state => {
         return state.countries
@@ -25,8 +21,15 @@ export class CountryListComponent implements OnInit {
           .filter(this.searchBarFilter(state.filter))
           .sort(this.alphabeticalOrder())
           .sort(this.sortByBorderNumber(state.borderSort))
-          .sort(this.sortByPopulation(state.populationSort))
-          .slice(0, state.displayNumber);
+          .sort(this.sortByPopulation(state.populationSort));
+      })
+    );
+  }
+
+  get countries$() {
+    return combineLatest(this.state$, this.filteredCountries$).pipe(
+      map(([state, filteredCountries]) => {
+        return filteredCountries.slice(0, state.displayNumber);
       })
     );
   }
