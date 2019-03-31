@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavItem } from 'src/app/shared/navbar/nav-items.interface';
+import { CountryService } from '../services/country.service';
 
 @Component({
   selector: 'app-wrapper',
@@ -17,9 +18,14 @@ export class WrapperComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private countryService: CountryService) { }
 
   ngOnInit() {
+  }
+
+  onFilter(filterString) {
+    console.log('filter =', filterString);
+    this.countryService.filterCountries(filterString);
   }
 
 }

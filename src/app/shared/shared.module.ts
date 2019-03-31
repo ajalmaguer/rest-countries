@@ -9,9 +9,10 @@ import { CardHeaderDirective } from './card/card-header.directive';
 import { CardBodyDirective } from './card/card-body.directive';
 import { RouterModule } from '@angular/router';
 import { CountryCardComponent } from './country-card/country-card.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
   declarations: [
     NavbarComponent,
     TopBarComponent,
