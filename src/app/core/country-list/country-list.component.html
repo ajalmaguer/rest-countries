@@ -40,11 +40,19 @@
           </button>
 
           <button
-            class="btn btn-outline-info"
+            class="btn btn-outline-info mr-3"
             [class.active]="(state$ | async)?.populationSort !== 0"
             (click)="togglePopulationSort()"
           >
             Population {{ getSortText((state$ | async)?.populationSort) }}
+          </button>
+         
+          <button
+            class="btn btn-outline-info"
+            [class.active]="(state$ | async)?.areaSort !== 0"
+            (click)="toggleAreaSort()"
+          >
+            Area {{ getSortText((state$ | async)?.areaSort) }}
           </button>
         </div>
       </div>

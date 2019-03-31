@@ -13,6 +13,7 @@ export interface AppState {
   islandsOnly: boolean;
   borderSort: number;
   populationSort: number;
+  areaSort: number;
 }
 
 @Injectable({
@@ -27,7 +28,8 @@ export class CountryService {
     countryListHash: {},
     islandsOnly: false,
     borderSort: 0,
-    populationSort: 0
+    populationSort: 0,
+    areaSort: 0
   });
   public readonly state$ = this._state$.asObservable();
 
@@ -90,7 +92,8 @@ export class CountryService {
     this._state$.next({
       ...state,
       borderSort: (state.borderSort + 1) % 3,
-      populationSort: 0
+      populationSort: 0,
+      areaSort: 0
     });
   }
 
@@ -99,6 +102,17 @@ export class CountryService {
     this._state$.next({
       ...state,
       populationSort: (state.populationSort + 1) % 3,
+      borderSort: 0,
+      areaSort: 0
+    });
+  }
+
+  toggleAreaSort() {
+    const state = this._state$.getValue();
+    this._state$.next({
+      ...state,
+      areaSort: (state.areaSort + 1) % 3,
+      populationSort: 0,
       borderSort: 0
     });
   }

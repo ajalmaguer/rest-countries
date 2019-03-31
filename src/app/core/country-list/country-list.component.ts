@@ -21,7 +21,8 @@ export class CountryListComponent implements OnInit {
           .filter(this.searchBarFilter(state.filter))
           .sort(this.alphabeticalOrder())
           .sort(this.sortByBorderNumber(state.borderSort))
-          .sort(this.sortByPopulation(state.populationSort));
+          .sort(this.sortByPopulation(state.populationSort))
+          .sort(this.sortByAreaSort(state.areaSort));
       })
     );
   }
@@ -63,6 +64,10 @@ export class CountryListComponent implements OnInit {
 
   togglePopulationSort() {
     this.countryService.togglePopulationSort();
+  }
+
+  toggleAreaSort() {
+    this.countryService.toggleAreaSort();
   }
 
   getSortText(sortId: number): string {
@@ -134,6 +139,19 @@ export class CountryListComponent implements OnInit {
           return countryA.population - countryB.population;
         case 2:
           return countryB.population - countryA.population;
+        default:
+          return 0;
+      }
+    };
+  }
+
+  sortByAreaSort(areaSort) {
+    return (countryA: Country, countryB: Country) => {
+      switch (areaSort) {
+        case 1:
+          return countryA.area - countryB.area;
+        case 2:
+          return countryB.area - countryA.area;
         default:
           return 0;
       }

@@ -21,6 +21,11 @@
       <span>{{ country.population | number }}</span>
     </div>
     <div>
+      <strong>Area: </strong>
+      <span *ngIf="country.area; else noData">{{ country.area | number }} km²</span>
+      <ng-template #noData>No data</ng-template>
+    </div>
+    <div>
       <strong>Languages ({{ country.languages.length }})</strong>
       <ul>
         <li *ngFor="let language of country.languages">
