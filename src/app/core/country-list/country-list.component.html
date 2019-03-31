@@ -23,51 +23,7 @@
     class="col-md-4"
     *ngFor="let country of (countries$ | async); trackBy: trackByFn"
   >
-    <app-card>
-      <div appCardHeader>{{ country.name }} ({{ country.alpha3Code }})</div>
-      <div appCardBody>
-        <div class="text-center">
-          <img
-            class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-            style="width: 25rem; height: 100px;"
-            [src]="country.flag"
-            alt=""
-          />
-        </div>
-        <div>
-          <strong>Population: </strong>
-          <span>{{ country.population | number }}</span>
-        </div>
-        <div>
-          <strong>Languages ({{ country.languages.length }})</strong>
-          <ul>
-            <li *ngFor="let language of country.languages">
-              {{ language.name }}
-            </li>
-          </ul>
-        </div>
-        <div>
-          <strong>Borders ({{ country.borders.length }})</strong>
-          <div
-            *ngIf="country.borders.length === 0; else borderList"
-            class="text-center"
-          >
-            <i class="fas fa-water text-info"></i>
-            <i class="fas fa-water text-info"></i>
-            <span class="text-primary"> Island </span>
-            <i class="fas fa-water text-info"></i>
-            <i class="fas fa-water text-info"></i>
-          </div>
-          <ng-template #borderList>
-            <ul>
-              <li *ngFor="let border of country.borders">
-                {{ getCountryName(border) }}
-              </li>
-            </ul>
-          </ng-template>
-        </div>
-      </div>
-    </app-card>
+    <app-country-card [country]="country"></app-country-card>
   </div>
 
   <div class="col-sm-12">
@@ -79,7 +35,6 @@
   </div>
 </div>
 
-
-<br>
-<br>
+<br />
+<br />
 <!-- <pre>{{ countries$ | async | json }}</pre> -->

@@ -1,0 +1,53 @@
+<app-card *ngIf="!country">
+    <div appCardBody>
+      <div class="text-center">
+          <i class="fas fa-spinner fa-pulse fa-3x"></i>
+      </div>
+    </div>  
+</app-card>
+
+<app-card *ngIf="country">
+  <div appCardHeader>{{ country.name }} ({{ country.alpha3Code }})</div>
+  <div appCardBody>
+    <div class="text-center">
+      <img
+        class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+        style="width: 25rem; height: 100px;"
+        [src]="country.flag"
+        alt=""
+      />
+    </div>
+    <div>
+      <strong>Population: </strong>
+      <span>{{ country.population | number }}</span>
+    </div>
+    <div>
+      <strong>Languages ({{ country.languages.length }})</strong>
+      <ul>
+        <li *ngFor="let language of country.languages">
+          {{ language.name }}
+        </li>
+      </ul>
+    </div>
+    <div>
+      <strong>Borders ({{ country.borders.length }})</strong>
+      <div
+        *ngIf="country.borders.length === 0; else borderList"
+        class="text-center"
+      >
+        <i class="fas fa-water text-info"></i>
+        <i class="fas fa-water text-info"></i>
+        <span class="text-primary"> Island </span>
+        <i class="fas fa-water text-info"></i>
+        <i class="fas fa-water text-info"></i>
+      </div>
+      <ng-template #borderList>
+        <ul>
+          <li *ngFor="let border of country.borders">
+            {{ getCountryName(border) }}
+          </li>
+        </ul>
+      </ng-template>
+    </div>
+  </div>
+</app-card>

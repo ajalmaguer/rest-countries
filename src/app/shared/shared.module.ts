@@ -8,6 +8,7 @@ import { CardComponent } from './card/card.component';
 import { CardHeaderDirective } from './card/card-header.directive';
 import { CardBodyDirective } from './card/card-body.directive';
 import { RouterModule } from '@angular/router';
+import { CountryCardComponent } from './country-card/country-card.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule],
@@ -18,7 +19,8 @@ import { RouterModule } from '@angular/router';
     PageHeadingComponent,
     CardComponent,
     CardHeaderDirective,
-    CardBodyDirective
+    CardBodyDirective,
+    CountryCardComponent
   ],
   exports: [
     NavbarComponent,
@@ -27,7 +29,8 @@ import { RouterModule } from '@angular/router';
     PageHeadingComponent,
     CardComponent,
     CardHeaderDirective,
-    CardBodyDirective
+    CardBodyDirective,
+    CountryCardComponent
   ]
 })
 export class SharedModule {}
