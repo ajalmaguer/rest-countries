@@ -26,8 +26,14 @@ export class CountryListComponent implements OnInit {
         return state.countries
           .filter(country => {
             const countryName = country.name.toLowerCase();
+            const alpha2Code = country.alpha2Code.toLowerCase();
+            const alpha3Code = country.alpha3Code.toLowerCase();
             const filter = state.filter.toLowerCase();
-            return countryName.indexOf(filter) > -1;
+            return (
+              countryName.includes(filter) ||
+              alpha2Code.includes(filter) ||
+              alpha3Code.includes(filter)
+            );
           })
           .slice(0, state.displayNumber);
       })
