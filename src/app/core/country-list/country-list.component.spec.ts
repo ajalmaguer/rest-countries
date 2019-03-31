@@ -33,6 +33,71 @@ describe('CountryListComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('#onlyIslandsFilter', () => {});
+
+  describe('#searchBarFilter', () => {
+    it('should not filter if value is ""', () => {
+      const countries = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' },
+        { name: 'second', alpha2Code: 'de', alpha3Code: 'xyz' }
+      ] as Country[];
+
+      const expectedOutput = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' },
+        { name: 'second', alpha2Code: 'de', alpha3Code: 'xyz' }
+      ] as Country[];
+
+      expect(countries.filter(component.searchBarFilter(''))).toEqual(
+        expectedOutput
+      );
+    });
+
+    it('should filter by name', () => {
+      const countries = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' },
+        { name: 'second', alpha2Code: 'de', alpha3Code: 'xyz' }
+      ] as Country[];
+
+      const expectedOutput = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' }
+      ] as Country[];
+
+      expect(countries.filter(component.searchBarFilter('fir'))).toEqual(
+        expectedOutput
+      );
+    });
+
+    it('should filter by alpha2code', () => {
+      const countries = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' },
+        { name: 'second', alpha2Code: 'de', alpha3Code: 'xyz' }
+      ] as Country[];
+
+      const expectedOutput = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' },
+      ] as Country[];
+
+      expect(countries.filter(component.searchBarFilter('ab'))).toEqual(
+        expectedOutput
+      );
+    });
+
+    it('should filter by alpha3code', () => {
+      const countries = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' },
+        { name: 'second', alpha2Code: 'de', alpha3Code: 'xyz' }
+      ] as Country[];
+
+      const expectedOutput = [
+        { name: 'first', alpha2Code: 'ab', alpha3Code: 'lmn' },
+      ] as Country[];
+
+      expect(countries.filter(component.searchBarFilter('lm'))).toEqual(
+        expectedOutput
+      );
+    });
+  });
+
   describe('#alphabeticalOrder', () => {
     it('should sort', () => {
       const countries = [{ name: 'c' }, { name: 'b' }, { name: 'a' }];
