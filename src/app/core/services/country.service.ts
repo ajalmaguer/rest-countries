@@ -5,11 +5,13 @@ import { tap } from 'rxjs/operators';
 
 import { Country, CountryListHash } from '../interfaces/country.interface';
 
-interface AppState {
+export interface AppState {
   filter: string;
   displayNumber: number;
   countries: Country[];
   countryListHash: CountryListHash;
+  islandsOnly: boolean;
+  borderSort: number;
 }
 
 @Injectable({
@@ -21,7 +23,9 @@ export class CountryService {
     filter: '',
     displayNumber: 15,
     countries: [],
-    countryListHash: {}
+    countryListHash: {},
+    islandsOnly: false,
+    borderSort: 0
   });
   public readonly state$ = this._state$.asObservable();
 
@@ -68,6 +72,22 @@ export class CountryService {
       ...state,
       filter: filterString,
       displayNumber: 15
+    });
+  }
+
+  toggleIslandsOnly() {
+    const state = this._state$.getValue();
+    this._state$.next({
+      ...state,
+      islandsOnly: !state.islandsOnly
+    });
+  }
+
+  toggleBorderSort() {
+    const state = this._state$.getValue();
+    this._state$.next({
+      ...state,
+      borderSort: (state.borderSort + 1) % 3
     });
   }
 
