@@ -21,44 +21,10 @@ export class CountryListComponent implements OnInit {
     return this.state$.pipe(
       map(state => {
         return state.countries
-          .filter(country => {
-            if (!state.islandsOnly) {
-              return true;
-            }
-            return country.borders.length === 0;
-          })
-          .filter(country => {
-            const countryName = country.name.toLowerCase();
-            const alpha2Code = country.alpha2Code.toLowerCase();
-            const alpha3Code = country.alpha3Code.toLowerCase();
-            const filter = state.filter.toLowerCase();
-            return (
-              countryName.includes(filter) ||
-              alpha2Code.includes(filter) ||
-              alpha3Code.includes(filter)
-            );
-          })
-          .sort((countryA, countryB) => {
-            const nameA = countryA.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = countryB.name.toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          })
-          .sort((countryA, countryB) => {
-            switch (state.borderSort) {
-              case 1:
-                return countryA.borders.length - countryB.borders.length;
-              case 2:
-                return countryB.borders.length - countryA.borders.length;
-              default:
-                return 0;
-            }
-          })
+          .filter(this.onlyIslandsFilter(state.islandsOnly))
+          .filter(this.searchBarFilter(state.filter))
+          .sort(this.alphabeticalOrder())
+          .sort(this.sortByBorderNumber(state.borderSort))
           .slice(0, state.displayNumber);
       })
     );
@@ -100,5 +66,55 @@ export class CountryListComponent implements OnInit {
       default:
         return 'None';
     }
+  }
+
+  onlyIslandsFilter(islandsOnly: boolean) {
+    return country => {
+      if (!islandsOnly) {
+        return true;
+      }
+      return country.borders.length === 0;
+    };
+  }
+
+  searchBarFilter(searchBarValue) {
+    return country => {
+      const countryName = country.name.toLowerCase();
+      const alpha2Code = country.alpha2Code.toLowerCase();
+      const alpha3Code = country.alpha3Code.toLowerCase();
+      const filter = searchBarValue.toLowerCase();
+      return (
+        countryName.includes(filter) ||
+        alpha2Code.includes(filter) ||
+        alpha3Code.includes(filter)
+      );
+    };
+  }
+
+  alphabeticalOrder() {
+    return (countryA, countryB) => {
+      const nameA = countryA.name.toUpperCase(); // ignore upper and lowercase
+      const nameB = countryB.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    };
+  }
+
+  sortByBorderNumber(borderSort) {
+    return (countryA, countryB) => {
+      switch (borderSort) {
+        case 1:
+          return countryA.borders.length - countryB.borders.length;
+        case 2:
+          return countryB.borders.length - countryA.borders.length;
+        default:
+          return 0;
+      }
+    };
   }
 }
