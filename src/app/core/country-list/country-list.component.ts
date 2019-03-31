@@ -22,7 +22,7 @@ export class CountryListComponent implements OnInit {
           .sort(this.alphabeticalOrder())
           .sort(this.sortByBorderNumber(state.borderSort))
           .sort(this.sortByPopulation(state.populationSort))
-          .sort(this.sortByAreaSort(state.areaSort));
+          .sort(this.sortByArea(state.areaSort));
       })
     );
   }
@@ -119,7 +119,7 @@ export class CountryListComponent implements OnInit {
     };
   }
 
-  sortByBorderNumber(borderSort) {
+  sortByBorderNumber(borderSort: number) {
     return (countryA: Country, countryB: Country) => {
       switch (borderSort) {
         case 1:
@@ -132,7 +132,7 @@ export class CountryListComponent implements OnInit {
     };
   }
 
-  sortByPopulation(populationSort) {
+  sortByPopulation(populationSort: number) {
     return (countryA: Country, countryB: Country) => {
       switch (populationSort) {
         case 1:
@@ -145,7 +145,7 @@ export class CountryListComponent implements OnInit {
     };
   }
 
-  sortByAreaSort(areaSort) {
+  sortByArea(areaSort: number) {
     return (countryA: Country, countryB: Country) => {
       switch (areaSort) {
         case 1:
